@@ -107,6 +107,7 @@ EOF
 
 prepare_jx() {
   ln -sf ${__dirname}/bin/jx $BIN_DIR/jx
+  bun install --frozen-lockfile
 }
 
 prepare_bun
