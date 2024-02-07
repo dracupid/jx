@@ -1,0 +1,25 @@
+{
+  "name": "jx",
+  "version": "1.0.0",
+  "description": "cli toolbox for jaxon",
+  "main": "index.js",
+  "private": true,
+  "type": "module",
+  "bin": {
+    "jx": "./bin/jx.js"
+  },
+  "scripts": {},
+  "keywords": [],
+  "author": "Jaxon Zhao",
+  "license": "MIT",
+  "dependencies": {
+    "chalk": "^5.3.0",
+    "commander": "^12.0.0"
+  },
+  "devDependencies": {
+    "@jaxonzhao/prettier-config": "^1.1.0",
+    "@types/bun": "^1.0.5",
+    "@types/node": "^20.11.16",
+    "prettier": "^3.2.5"
+  }
+}
