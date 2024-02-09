@@ -7,7 +7,3 @@ export function lazyGet<T>(getter: () => T): () => T {
     return obj
   }
 }
-
-export function isClass(v: unknown) {
-  return v instanceof Function && v?.constructor?.name === 'Function'
-}

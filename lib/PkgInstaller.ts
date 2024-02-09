@@ -1,6 +1,6 @@
 import { $, which } from 'bun'
 import os from 'os'
-import { lazyGet } from './utils/object'
+import { lazyGet } from './utils/object.js'
 
 interface PackageManager {
   name: string
@@ -34,8 +34,9 @@ const packageManagers = [apt, homebrew]
 
 export const getPkgManagerContext = lazyGet<{
   support: (name: string) => boolean
-  add: (name: string) => void
+  add: (name: string, version?: string) => void
   run: () => Promise<void>
+  isInstalled: (name: string) => Promise<boolean>
 } | null>(() => {
   const platform = os.platform()
   const matched = packageManagers.filter((pkg) =>
@@ -50,6 +51,9 @@ export const getPkgManagerContext = lazyGet<{
         },
         add(name) {
           toBeInstalled.add(name)
+        },
+        async isInstalled(name: string) {
+          return !!Bun.which(name)
         },
         async run() {
           if (toBeInstalled.size > 0) {

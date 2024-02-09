@@ -2,15 +2,16 @@ import { file } from 'bun'
 import chalk from 'chalk'
 import { program } from 'commander'
 import path from 'path'
-import { Installer } from '../lib/Installer'
-import { getPkgManagerContext } from '../lib/PkgInstaller'
+import { type Installer } from '../lib/Installer.js'
+import { getPkgManagerContext } from '../lib/PkgInstaller.js'
 
 program.argument('<names...>', 'one or more package names')
 program.parse(process.argv)
 
 async function getRunner(
-  name: string
+  _name: string
 ): Promise<{ run?: () => Promise<void>; name: string }> {
+  const [name, version] = _name.split('@')
   const customPath = path.join(import.meta.dir, '../lib/install', name + '.ts')
   if (await file(customPath).exists()) {
     const exp = await import(customPath)
@@ -18,14 +19,22 @@ async function getRunner(
     return {
       name,
       run: async () => {
-        await runInstall(installer.dependencies)
-        await installer.run()
+        if (await installer.isInstalled({ version })) {
+          console.log(chalk.yellow(`[jx] ${_name} already installed.`))
+        } else {
+          await runInstall(installer.dependencies)
+          await installer.run({ version })
+        }
       },
     }
   }
   const pkgManagerCtx = getPkgManagerContext()
   if (pkgManagerCtx?.support(name)) {
-    pkgManagerCtx.add(name)
+    if (await pkgManagerCtx.isInstalled(name)) {
+      console.log(chalk.yellow(`[jx] ${_name} already installed.`))
+    } else {
+      pkgManagerCtx.add(name, version)
+    }
     return { name, run: pkgManagerCtx.run }
   }
 

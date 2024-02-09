@@ -3,10 +3,11 @@ import chalk from 'chalk'
 import { existsSync } from 'node:fs'
 import os from 'os'
 import path from 'path'
-import { Installer } from '../Installer.ts'
+import { type Installer } from '../Installer.ts'
 
 export default class OhMyZshInstaller implements Installer {
   dependencies = ['git', 'zsh']
+  omzDir = process.env.ZSH || path.join(os.homedir(), '.oh-my-zsh')
 
   async installOhMyZsh(omzDir: string) {
     let script = await (
@@ -56,16 +57,15 @@ export default class OhMyZshInstaller implements Installer {
     await Bun.write(zshrcFile, newZshrc)
   }
 
+  isInstalled(): Promise<boolean> {
+    return Promise.resolve(existsSync(this.omzDir))
+  }
+
   async run() {
-    const omzDir = process.env.ZSH || path.join(os.homedir(), '.oh-my-zsh')
+    await this.installOhMyZsh(this.omzDir)
 
-    if (existsSync(omzDir)) {
-      console.log(chalk.yellow(`oh-my-zsh already installed at ${omzDir}`))
-    } else {
-      await this.installOhMyZsh(omzDir)
-    }
-
-    const zshCustomDir = process.env.ZSH_CUSTOM || path.join(omzDir, 'custom')
+    const zshCustomDir =
+      process.env.ZSH_CUSTOM || path.join(this.omzDir, 'custom')
     const highlightingPluginDir = `${zshCustomDir}/plugins/zsh-syntax-highlighting`
     if (!existsSync(highlightingPluginDir)) {
       await this.installHighlight(highlightingPluginDir)
