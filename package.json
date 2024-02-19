@@ -18,9 +18,11 @@
     "progress": "^2.0.3"
   },
   "devDependencies": {
+    "@jaxonzhao/eslint-config-typescript": "^1.1.0",
     "@jaxonzhao/prettier-config": "^1.1.0",
-    "@types/bun": "^1.0.5",
+    "@types/bun": "^1.0.6",
     "@types/progress": "^2.0.7",
+    "eslint": "^8.56.0",
     "prettier": "^3.2.5"
   }
 }

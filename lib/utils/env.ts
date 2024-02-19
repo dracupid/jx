@@ -17,8 +17,9 @@ export const platform = lazyGet(() => {
       return PLATFORM.Mac
     case 'linux':
       return PLATFORM.Linux
+    default:
+      throw new Error(`platform ${platform} not supported.`)
   }
-  throw new Error(`platform ${platform} not supported.`)
 })
 
 export const arch = lazyGet(() => {
@@ -28,6 +29,7 @@ export const arch = lazyGet(() => {
       return ARCH.ARM64
     case 'x64':
       return ARCH.X64
+    default:
+      throw new Error(`arch ${arch} not supported.`)
   }
-  throw new Error(`arch ${arch} not supported.`)
 })

@@ -1,7 +1,7 @@
 export function lazyGet<T>(getter: () => T): () => T {
   let obj: T | undefined
   return () => {
-    if (obj === undefined) {
+    if (typeof obj === 'undefined') {
       obj = getter()
     }
     return obj

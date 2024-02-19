@@ -1,7 +1,7 @@
 import { file } from 'bun'
 import fs from 'fs/promises'
 import path from 'node:path'
-import { ReadableStream } from 'node:stream/web'
+import type { ReadableStream } from 'node:stream/web'
 import ProgressBar from 'progress'
 
 function getProxy(url: string) {
@@ -31,7 +31,7 @@ export async function download(url: string, filePath: string) {
 
   try {
     let downloadedLength = (await handle.stat()).size
-    let res = await fetch(url, {
+    const res = await fetch(url, {
       proxy,
       headers:
         downloadedLength > 0
@@ -67,9 +67,7 @@ export async function download(url: string, filePath: string) {
       }
     }
 
-    let receivedLength = 0
-
-    var bar = new ProgressBar(
+    const bar = new ProgressBar(
       'downloading [:bar] :percent (:rate/bps) ETA: :etas ',
       {
         complete: '=',
@@ -80,7 +78,6 @@ export async function download(url: string, filePath: string) {
     bar.tick(downloadedLength)
 
     for await (const chunk of res.body as unknown as ReadableStream<Uint8Array>) {
-      receivedLength += chunk.length
       await handle.write(chunk)
       bar.tick(chunk.length)
     }

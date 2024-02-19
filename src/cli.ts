@@ -1,13 +1,10 @@
-import Bun from 'bun'
 import { program } from 'commander'
-import path from 'path'
+import pkgJSON from '../package.json' with { type: 'json' }
 
 // fix for jx install -h
 process.execArgv = []
+
 // process.env.FORCE_COLOR = '3'
-const pkgJSON = await Bun.file(
-  path.join(import.meta.dirname, '../package.json')
-).json()
 
 program
   .name(pkgJSON.name)
