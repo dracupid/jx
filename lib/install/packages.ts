@@ -31,6 +31,11 @@ export const loaders: Record<string, JxInstallerLoader> = {
       return (await import('./packages/oh-my-zsh')).default
     },
   },
+  rust: {
+    async load() {
+      return (await import('./packages/rust')).default
+    },
+  },
   git: {
     async load() {
       return createInstaller('git', ['apt', 'homebrew'])
