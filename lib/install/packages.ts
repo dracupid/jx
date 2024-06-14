@@ -48,11 +48,12 @@ export const loaders: Record<string, JxInstallerLoader> = {
   },
 }
 
+export const fullLoaders: Record<string, JxInstallerLoader> = { ...loaders }
 // expand aliases
-Object.values(loaders).forEach((it) => {
+Object.values(fullLoaders).forEach((it) => {
   if (it.alias) {
     it.alias.forEach((name) => {
-      loaders[name] = it
+      fullLoaders[name] = it
     })
   }
 })
@@ -70,7 +71,7 @@ export async function formatPackages(_pkgs: string[]) {
   const notInstalled: Pacakge[] = []
   for (const pkg of pkgs) {
     const [name, version] = pkg.split('@')
-    const loader = loaders[name || '']
+    const loader = fullLoaders[name || '']
     if (!loader) {
       unknown.add(pkg)
     } else {

@@ -116,4 +116,4 @@ prepare_bun
 prepare_jx
 
 echo ""
-echo ">> Congratulations! jx has been install to ${INSTALL_DIR}."
+echo ">> Congratulations! jx has been install to ${INSTALL_DIR}. Please add ${BIN_DIR} to your PATH."

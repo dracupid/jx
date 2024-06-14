@@ -1,5 +1,5 @@
 import { createLogger } from 'jtk/log'
-import { formatPackages } from '../lib/install/packages'
+import { formatPackages, loaders } from '../lib/install/packages'
 
 const logger = createLogger('jx:install')
 
@@ -26,6 +26,22 @@ async function runInstall(packages?: string[]) {
   }
 }
 
-export async function run(args: { packages: string[] }) {
-  await runInstall(args.packages)
+export async function run(args: {
+  packages: string[] | undefined
+  list: boolean
+}) {
+  if (args.list) {
+    Object.entries(loaders).forEach(([name, data]) => {
+      if (data.alias) {
+        console.log(`> ${name} (${data.alias.join(',')})`)
+      } else {
+        console.log(`> ${name}`)
+      }
+    })
+  } else if (args.packages && args.packages.length > 0) {
+    await runInstall(args.packages)
+  } else {
+    logger.error('no package specified')
+    process.exit(1)
+  }
 }

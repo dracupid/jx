@@ -39,15 +39,21 @@ await yargs(hideBin(process.argv))
     }
   )
   .command(
-    'install <packages...>',
+    'install [packages...]',
     'install packages',
     (yargs) =>
-      yargs.positional('packages', {
-        describe: 'package list',
-        type: 'string',
-        array: true,
-        demandOption: true,
-      }),
+      yargs
+        .positional('packages', {
+          describe: 'package list',
+          type: 'string',
+          array: true,
+        })
+        .option('list', {
+          alias: 'l',
+          desc: 'list all packages',
+          boolean: true,
+          default: false,
+        }),
     async (args) => {
       const { run } = await import('./install')
       return run(args)
