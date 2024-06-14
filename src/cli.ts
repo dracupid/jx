@@ -56,7 +56,7 @@ await yargs(hideBin(process.argv))
         }),
     async (args) => {
       const { run } = await import('./install')
-      return run(args)
+      void run(args)
     }
   )
   .demandCommand(1)

@@ -1,10 +1,11 @@
 import { $, which } from 'bun'
+import { createLogger } from 'jtk/log/index.js'
 import { PLATFORM, platform } from '../utils/env.js'
 import { lazyGet } from '../utils/object.js'
 import type { Installer, PackageManager } from './Installer.js'
 
 $.throws(true)
-
+const logger = createLogger('jx:install')
 class PackageManagerLoader {
   waitingList = new Set<string>()
   constructor(
@@ -57,6 +58,15 @@ export const PMS = {
       return (await import('./pms/homebrew.js')).default
     },
   }),
+
+  dnf: new PackageManagerLoader({
+    name: 'dnf',
+    bin: 'dnf',
+    platforms: [PLATFORM.Linux],
+    async load() {
+      return (await import('./pms/dnf.js')).default
+    },
+  }),
 } satisfies Record<string, PackageManagerLoader>
 
 type PMName = keyof typeof PMS
@@ -72,7 +82,12 @@ export async function createInstaller(
     })
     .find(({ loader }) => loader.canUse())
 
-  if (!res) throw new Error(`install ${binName} failed.`)
+  if (!res) {
+    logger.fatal(
+      `install ${binName} failed, either ${Object.keys(PMS).join('/')} is required`
+    )
+    process.exit(1)
+  }
   await res.loader.load()
 
   res.loader.add(res.name)
