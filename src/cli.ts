@@ -1,28 +1,57 @@
-import { program } from 'commander'
+import yargs from 'yargs'
+import { hideBin } from 'yargs/helpers'
 import pkgJSON from '../package.json' with { type: 'json' }
 
-// fix for jx install -h
-process.execArgv = []
-
-// process.env.FORCE_COLOR = '3'
-
-program
-  .name(pkgJSON.name)
-  .description(pkgJSON.description)
-  .version(pkgJSON.version)
-
-program
-  .command('install <name>', 'install packages', { executableFile: 'install' })
-  .alias('i')
-
-// program
-//   .command('split')
-//   .description('Split a string into substrings and display as an array')
-//   .argument('<string>', 'string to split')
-//   .option('--first', 'display just the first substring')
-//   .option('-s, --separator <char>', 'separator character', ',')
-//   .action((str, options) => {
-//     const limit = options.first ? 1 : undefined
-//     console.log(str.split(options.separator, limit))
-//   })
-program.parse()
+await yargs(hideBin(process.argv))
+  .scriptName(pkgJSON.name)
+  .command(
+    'cleandir <dirs...>',
+    'clean dir',
+    (yargs) =>
+      yargs
+        .option('preset', {
+          alias: 'p',
+          desc: 'preset clean rule',
+          choices: ['xlog', 'apk'],
+          demandOption: true,
+        })
+        .option('remove', {
+          alias: 'r',
+          desc: 'remove files',
+          boolean: true,
+          default: false,
+        })
+        .option('aggressive', {
+          alias: 'a',
+          desc: 'user more aggressive pattern',
+          boolean: true,
+          default: false,
+        })
+        .positional('dirs', {
+          describe: 'dir list',
+          type: 'string',
+          array: true,
+          demandOption: true,
+        }),
+    async (args) => {
+      const { run } = await import('./cleandir')
+      run(args)
+    }
+  )
+  .command(
+    'install <packages...>',
+    'install packages',
+    (yargs) =>
+      yargs.positional('packages', {
+        describe: 'package list',
+        type: 'string',
+        array: true,
+        demandOption: true,
+      }),
+    async (args) => {
+      const { run } = await import('./install')
+      return run(args)
+    }
+  )
+  .demandCommand(1)
+  .parseAsync()

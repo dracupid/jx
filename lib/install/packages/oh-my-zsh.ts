@@ -1,9 +1,11 @@
 import { $, file } from 'bun'
-import chalk from 'chalk'
+import { createLogger } from 'jtk/log'
 import { existsSync } from 'node:fs'
 import os from 'os'
 import path from 'path'
-import { jxExists, type Installer } from '../Installer.ts'
+import { jxExists, type Installer } from '../Installer'
+
+const logger = createLogger('jx:install:omz')
 
 async function installOhMyZsh(omzDir: string) {
   let script = await (
@@ -26,7 +28,7 @@ async function installHighlight(dir: string) {
 
 async function updateZshrc(zshrcPath: string) {
   if (!existsSync(zshrcPath)) {
-    console.error(chalk.red(zshrcPath + ' not found'))
+    logger.error(zshrcPath + ' not found')
     return
   }
   const zshrcFile = file(zshrcPath)
@@ -43,7 +45,7 @@ async function updateZshrc(zshrcPath: string) {
   if (zshrc !== newZshrc) {
     const bakPath = zshrcPath + `.${Date.now()}.jx_bak`
     await Bun.write(bakPath, zshrcFile)
-    console.log(`backup .zshrc to ${bakPath}`)
+    logger.log(`backup .zshrc to ${bakPath}`)
   }
   await Bun.write(zshrcFile, newZshrc)
 }

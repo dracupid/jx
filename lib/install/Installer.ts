@@ -1,7 +1,7 @@
+import { ensureDir, exists } from 'jtk/fs'
 import fs from 'node:fs/promises'
 import os from 'node:os'
 import path from 'node:path'
-import { ensureDir, exists } from '../utils/fs'
 
 export interface InstallOptions {
   version: string

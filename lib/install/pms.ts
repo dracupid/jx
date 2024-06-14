@@ -68,7 +68,7 @@ export async function createInstaller(
 ): Promise<Installer> {
   const res = pms
     .map((pmName) => {
-      return { loader: PMS[pmName as PMName], name: alias[pmName] || binName }
+      return { loader: PMS[pmName], name: alias[pmName] || binName }
     })
     .find(({ loader }) => loader.canUse())
 

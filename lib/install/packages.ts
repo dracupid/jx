@@ -1,5 +1,5 @@
-import type { InstallOptions, Installer } from './Installer.js'
-import { createInstaller } from './pms.js'
+import type { InstallOptions, Installer } from './Installer'
+import { createInstaller } from './pms'
 
 interface JxInstallerLoader {
   alias?: string[]
@@ -70,16 +70,16 @@ export async function formatPackages(_pkgs: string[]) {
   const notInstalled: Pacakge[] = []
   for (const pkg of pkgs) {
     const [name, version] = pkg.split('@')
-    const loader = loaders[name]
+    const loader = loaders[name || '']
     if (!loader) {
       unknown.add(pkg)
     } else {
       const installer = await loader.load()
-      if (await installer.isInstalled({ version })) {
+      if (await installer.isInstalled({ version: version || '' })) {
         installed.add(pkg)
       } else {
         notInstalled.push({
-          name,
+          name: name || '',
           version: version || loader.options?.version || '',
           installer,
         })
