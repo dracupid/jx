@@ -5,6 +5,4 @@ IFS=$'\n\t'
 __dirname=$(dirname $(realpath $BASH_SOURCE))
 export PATH=$HOME/.jx/bin:${PATH}
 
-BUN_BIN="${__dirname}/../node_modules/.bin/bun"
-
-$BUN_BIN $(realpath "${__dirname}/../src/cli.ts") "$@"
+bun $(realpath "${__dirname}/../src/cli.ts") "$@"
