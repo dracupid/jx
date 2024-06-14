@@ -83,9 +83,7 @@ export async function createInstaller(
     .find(({ loader }) => loader.canUse())
 
   if (!res) {
-    logger.fatal(
-      `install ${binName} failed, either ${Object.keys(PMS).join('/')} is required`
-    )
+    logger.fatal(`install ${binName} failed, none of ${pms.join('/')} is found`)
     process.exit(1)
   }
   await res.loader.load()

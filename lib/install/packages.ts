@@ -38,12 +38,12 @@ export const loaders: Record<string, JxInstallerLoader> = {
   },
   git: {
     async load() {
-      return createInstaller('git', ['apt', 'homebrew'])
+      return createInstaller('git', ['apt', 'homebrew', 'dnf'])
     },
   },
   zsh: {
     async load() {
-      return createInstaller('zsh', ['apt', 'homebrew'])
+      return createInstaller('zsh', ['apt', 'homebrew', 'dnf'])
     },
   },
 }
