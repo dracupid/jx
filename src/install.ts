@@ -30,7 +30,11 @@ export async function run(args: {
   packages: string[] | undefined
   list: boolean
 }) {
-  if (args.list) {
+  const packages = args.packages || []
+  if (args.list || packages.length === 0) {
+    if (!args.list && packages.length === 0) {
+      logger.warn('no package specified, you can install following packages:')
+    }
     Object.entries(loaders).forEach(([name, data]) => {
       if (data.alias) {
         console.log(`> ${name} (${data.alias.join(',')})`)
@@ -38,10 +42,7 @@ export async function run(args: {
         console.log(`> ${name}`)
       }
     })
-  } else if (args.packages && args.packages.length > 0) {
+  } else if (packages.length > 0) {
     await runInstall(args.packages)
-  } else {
-    logger.error('no package specified')
-    process.exit(1)
   }
 }
