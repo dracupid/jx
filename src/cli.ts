@@ -56,7 +56,28 @@ await yargs(hideBin(process.argv))
         }),
     async (args) => {
       const { run } = await import('./install')
-      void run(args)
+      await run(args)
+    }
+  )
+  .command(
+    'heic [files...]',
+    'convert images(or dir) to heic',
+    (yargs) =>
+      yargs
+        .option('remove', {
+          alias: 'r',
+          desc: 'remove origin image',
+          boolean: true,
+          default: false,
+        })
+        .positional('files', {
+          describe: 'file or dir list',
+          type: 'string',
+          array: true,
+        }),
+    async (args) => {
+      const { run } = await import('./heic')
+      await run(args)
     }
   )
   .demandCommand(1)
