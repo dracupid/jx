@@ -1,1 +1,1 @@
-export { default } from '@jaxonzhao/prettier-config'
+export { default } from '@jaxonzhao/boot/prettier'

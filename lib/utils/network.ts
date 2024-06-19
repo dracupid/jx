@@ -14,7 +14,7 @@ function getProxy(url: string) {
 
 // TODO: 断点续传 https://www.myfreax.com/node-js-what-is-the-actual-break-point/
 export async function download(url: string, filePath: string) {
-  const proxy = getProxy(url)
+  const proxy = getProxy(url) || ''
   console.log(
     `>> Downloading ${url} to ${filePath}${proxy ? `(with proxy: ${proxy})` : ''}`
   )

@@ -1,17 +1,8 @@
-import jaxonTSConfig from '@jaxonzhao/eslint-config-typescript'
+//@ts-check
+import { useTs, useESLintConfig } from '@jaxonzhao/boot/eslint'
 
-/** @type {import('eslint').Linter.FlatConfig[]} */
-export default [
-  ...jaxonTSConfig,
-  {
-    languageOptions: {
-      parserOptions: {
-        project: './tsconfig.json',
-        tsconfigRootDir: import.meta.dirname,
-      },
-    },
-    rules: {
+export default useESLintConfig(...useTs(import.meta.dirname), {
+  rules: {
       'n/no-unsupported-features/node-builtins': 0,
     },
-  },
-]
+})

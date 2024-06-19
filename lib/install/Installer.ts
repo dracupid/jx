@@ -1,4 +1,4 @@
-import { ensureDir, exists } from 'jtk/fs'
+import { ensureDir, exists } from 'jxtk/fs'
 import fs from 'node:fs/promises'
 import os from 'node:os'
 import path from 'node:path'

@@ -1,5 +1,5 @@
 import { $, file } from 'bun'
-import { createLogger } from 'jtk/log'
+import { createLogger } from 'jxtk/log'
 import { existsSync } from 'node:fs'
 import os from 'os'
 import path from 'path'

@@ -1,4 +1,8 @@
 {
-  "extends": "jtk/tsconfig.common.json",
-  "include": ["src/**/*", "lib/**/*"]
+  "extends": "@jaxonzhao/boot/tsconfig",
+  "include": ["src/**/*", "lib/**/*", "package.json"],
+  "compilerOptions": {
+    "lib": ["ESNext"],
+    "outDir": "node_modules/.typescript"
+  }
 }

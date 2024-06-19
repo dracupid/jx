@@ -1,4 +1,4 @@
-import { createLogger } from 'jtk/log'
+import { createLogger } from 'jxtk/log'
 import { formatPackages, loaders } from '../lib/install/packages'
 
 const logger = createLogger('jx:install')

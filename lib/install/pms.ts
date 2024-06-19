@@ -1,5 +1,5 @@
 import { $, which } from 'bun'
-import { createLogger } from 'jtk/log/index.js'
+import { createLogger } from 'jxtk/log/index.js'
 import { PLATFORM, platform } from '../utils/env.js'
 import { lazyGet } from '../utils/object.js'
 import type { Installer, PackageManager } from './Installer.js'
