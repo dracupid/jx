@@ -7,6 +7,8 @@ import { jxExists, type Installer } from '../Installer'
 
 const logger = createLogger('jx:install:omz')
 
+const PLUGIN_LIST = ['zsh-syntax-highlighting', 'zsh-autosuggestions']
+
 async function installOhMyZsh(omzDir: string) {
   let script = await (
     await fetch(
@@ -22,8 +24,10 @@ async function installOhMyZsh(omzDir: string) {
   })
 }
 
-async function installHighlight(dir: string) {
-  await $`git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${dir}`
+async function installPlugin(name: string, zshCustomDir: string) {
+  const dest = `${zshCustomDir}/plugins/${name}`
+  if (existsSync(dest)) return
+  await $`git clone https://github.com/zsh-users/${name}.git ${dest}`
 }
 
 async function updateZshrc(zshrcPath: string) {
@@ -38,7 +42,7 @@ async function updateZshrc(zshrcPath: string) {
     .replace(/(^ZSH_THEME=")(\w+)(")/m, (_, p1, __, p2) => `${p1}ys${p2}`)
     .replace(/^(plugins=\()([^)]*)(\))/m, (_, p1, plugins: string, p2) => {
       const pluginList = new Set(plugins.split(/\s+/))
-      pluginList.add('zsh-syntax-highlighting')
+      for (const p of PLUGIN_LIST) pluginList.add(p)
       return `${p1}${[...pluginList].join(' ')}${p2}`
     })
 
@@ -61,12 +65,9 @@ export default {
     await installOhMyZsh(OMZ_DIR)
 
     const zshCustomDir = process.env.ZSH_CUSTOM || path.join(OMZ_DIR, 'custom')
-    const highlightingPluginDir = `${zshCustomDir}/plugins/zsh-syntax-highlighting`
-
-    if (!existsSync(highlightingPluginDir)) {
-      await installHighlight(highlightingPluginDir)
-    }
-
+    await Promise.all(
+      PLUGIN_LIST.map(async (name) => installPlugin(name, zshCustomDir))
+    )
     await updateZshrc(path.join(os.homedir(), '.zshrc'))
   },
 } satisfies Installer
