@@ -61,7 +61,7 @@ await yargs(hideBin(process.argv))
   )
   .command(
     'heic [files...]',
-    'convert images(or dir) to heic',
+    'compress images(or dir) to heic',
     (yargs) =>
       yargs
         .option('remove', {
@@ -80,5 +80,115 @@ await yargs(hideBin(process.argv))
       await run(args)
     }
   )
+  .command(
+    'heic2 [files...]',
+    'compress images(or dir) to heic',
+    (yargs) =>
+      yargs
+        .option('remove', {
+          alias: 'r',
+          desc: 'remove origin image',
+          boolean: true,
+          default: false,
+        })
+        .positional('files', {
+          describe: 'file or dir list',
+          type: 'string',
+          array: true,
+        }),
+    async (args) => {
+      const { run } = await import('./heic2.ts')
+      await run(args)
+    }
+  )
+  .command(
+    'avif [files...]',
+    'compress images(or dir) to avif',
+    (yargs) =>
+      yargs
+        .option('remove', {
+          alias: 'r',
+          desc: 'remove origin image',
+          boolean: true,
+          default: false,
+        })
+        .option('svt', {
+          desc: 'use SVT-AV1 encoder',
+          boolean: true,
+          default: false,
+        })
+        .positional('files', {
+          describe: 'file or dir list',
+          type: 'string',
+          array: true,
+        }),
+    async (args) => {
+      const { run } = await import('./avif')
+      await run(args)
+    }
+  )
+  .command(
+    'mp4 [files...]',
+    'compress videos(or dirs) to .min.mp4',
+    (yargs) =>
+      yargs
+        .option('remove', {
+          alias: 'r',
+          desc: 'remove origin video',
+          boolean: true,
+          default: false,
+        })
+        .option('hevc', {
+          desc: 'encode to hevc',
+          boolean: true,
+          default: false,
+        })
+        .option('avif', {
+          desc: 'encode to avif',
+          boolean: true,
+          default: false,
+        })
+        .option('gpu', {
+          desc: 'use gpu, but worse quality',
+          boolean: true,
+          default: false,
+        })
+        .option('copy', {
+          desc: 'copy stream only',
+          boolean: true,
+          default: false,
+        })
+        .option('compare', {
+          alias: 'c',
+          desc: 'compare two video',
+          boolean: true,
+          default: false,
+        })
+        .positional('files', {
+          describe: 'file or dir list',
+          type: 'string',
+          array: true,
+        }),
+
+    async (args) => {
+      const { run } = await import('./mp4')
+      await run(args)
+    }
+  )
+  .command(
+    'format [files...]',
+    'format name of files',
+    (yargs) =>
+      yargs.positional('files', {
+        describe: 'file or dir list',
+        type: 'string',
+        array: true,
+      }),
+    async (args) => {
+      const { run } = await import('./format-name')
+      await run(args)
+    }
+  )
   .demandCommand(1)
+  .strict()
   .parseAsync()

@@ -13,10 +13,11 @@ export async function run(args: {
   const files = await matchFiles(args.files, exts)
   await transformFiles(
     files,
-    replaceExtname.bind(undefined, '.heic'),
+    replaceExtname.bind(undefined, '_2.heic'),
     async (oldPath, newPath) => {
-      await $`sips -s format heic ${oldPath} --out ${newPath}`.quiet()
+      console.log(oldPath, newPath)
+      await $`heif-enc ${oldPath} -q 50 -o ${newPath} -p x265:preset=veryfast --benchmark` //.quiet()
     },
-    args
+    { concurrency: 1 }
   )
 }
