@@ -105,6 +105,8 @@ EOF
 [install]
 registry = "${NPM_REGISTRY}"
 EOF
+
+  bun completions
 }
 
 prepare_jx() {
