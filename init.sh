@@ -6,7 +6,7 @@ IFS=$'\n\t'
 
 # config variables
 NPM_REGISTRY=${NPM_REGISTRY-"http://mirrors.cloud.tencent.com/npm/"}
-BUN_VERSION=${BUN_VERSION-"1.1.16"}
+BUN_VERSION=${BUN_VERSION-"1.1.22"}
 # -- end --
 
 __dirname=$(dirname $(realpath $BASH_SOURCE))
