@@ -189,6 +189,20 @@ await yargs(hideBin(process.argv))
       await run(args)
     }
   )
+  .command(
+    'ext [files...]',
+    'eix extname of files',
+    (yargs) =>
+      yargs.positional('files', {
+        describe: 'file or dir list',
+        type: 'string',
+        array: true,
+      }),
+    async (args) => {
+      const { run } = await import('./ext.ts')
+      await run(args)
+    }
+  )
   .demandCommand(1)
   .strict()
   .parseAsync()
