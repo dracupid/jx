@@ -46,7 +46,7 @@ export async function run(args: {
     '-crf',
     args.hevc ? '24' /* 28 */ : args.avif ? '32' : '23', // less is better
     '-fps_mode',
-    'auto',
+    'passthrough',
   ].flat()
 
   if (args.avif) {
