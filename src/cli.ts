@@ -191,7 +191,7 @@ await yargs(hideBin(process.argv))
   )
   .command(
     'ext [files...]',
-    'eix extname of files',
+    'fix extname of files',
     (yargs) =>
       yargs.positional('files', {
         describe: 'file or dir list',
