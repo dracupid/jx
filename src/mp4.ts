@@ -3,7 +3,7 @@ import os from 'os'
 import { getMediaInfo } from '../lib/mediaInfo'
 import { matchFiles, stem, transformFiles } from '../lib/utils/file-tools'
 
-const exts = ['mp4', 'mov', 'qt', 'avi', 'ts', 'webm' /* 'gif' */]
+const exts = ['mp4', 'mov', 'qt', 'avi', 'ts', 'm4v', 'webm' /* 'gif' */]
 
 export async function run(args: {
   files: string[] | undefined

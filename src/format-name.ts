@@ -14,6 +14,10 @@ export async function run(args: { files: string[] | undefined }) {
       parsedPath.name = parsedPath.name.slice(parsedPath.name.indexOf('('))
     }
 
+    if (parsedPath.name.includes('-')) {
+      parsedPath.name = parsedPath.name.slice(parsedPath.name.indexOf('-'))
+    }
+
     const num = /(\d+)/.exec(parsedPath.name)
     if (num) {
       parsedPath.name = Number.parseInt(num[1]!) + ''
