@@ -5,7 +5,7 @@ import {
   transformFiles,
 } from '../lib/utils/file-tools'
 
-const exts = ['jpg', 'png', 'jpeg', 'bmp', 'tiff', 'jfif', 'webp']
+const exts = ['jpg', 'png', 'jpeg', 'bmp', 'tiff', 'jfif', 'webp', 'RAF']
 export async function run(args: {
   remove: boolean
   files: string[] | undefined
