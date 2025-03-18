@@ -46,6 +46,11 @@ export const loaders: Record<string, JxInstallerLoader> = {
       return createInstaller('zsh', ['apt', 'homebrew', 'dnf'])
     },
   },
+  homebrew: {
+    async load() {
+      return (await import('./packages/homebrew')).default
+    },
+  },
 }
 
 export const fullLoaders: Record<string, JxInstallerLoader> = { ...loaders }
