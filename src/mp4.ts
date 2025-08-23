@@ -1,7 +1,12 @@
 import { $ } from 'bun'
 import os from 'os'
 import { getMediaInfo } from '../lib/mediaInfo'
-import { matchFiles, stem, transformFiles } from '../lib/utils/file-tools'
+import {
+  logger,
+  matchFiles,
+  stem,
+  transformFiles,
+} from '../lib/utils/file-tools'
 
 const exts = [
   'mp4',
@@ -23,12 +28,30 @@ export async function run(args: {
   remove: boolean
   copy: boolean
   compare: boolean
+  detect: boolean
 }) {
   const files = await matchFiles(
     args.files,
     exts,
     (p) => !p.endsWith('.min.mp4')
   )
+
+  if (args.detect) {
+    for await (const p of files) {
+      const { video } = await getMediaInfo(p)
+      if (Number.parseInt(video._bitRate!) > 55 * 1000 * 1000) {
+        logger.error('%s (%s) %s', video.bitRate, video.type, p)
+      } else if (Number.parseInt(video._bitRate!) > 30 * 1000 * 1000) {
+        logger.warn('%s (%s) %s', video.bitRate, video.type, p)
+      } else if (Number.parseInt(video._bitRate!) > 15 * 1000 * 1000) {
+        logger.info('%s (%s) %s', video.bitRate, video.type, p)
+      } else {
+        // logger.log('%s (%s) %s', video.bitRate, video.type, p)
+      }
+    }
+
+    return
+  }
 
   const ffmpegArgs = [
     '-copyts',
@@ -115,6 +138,7 @@ export async function run(args: {
 
       console.log('Video:')
       Object.keys(video).forEach((name) => {
+        if (name.startsWith('_')) return
         console.log(
           '    %s:%s   %s -> %s ',
           name.padEnd(15),
@@ -126,6 +150,7 @@ export async function run(args: {
 
       console.log('Audio:')
       Object.keys(audio).forEach((name) => {
+        if (name.startsWith('_')) return
         console.log(
           '    %s:%s  %s -> %s',
           name.padEnd(15),

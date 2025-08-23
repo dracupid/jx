@@ -7,7 +7,7 @@ import os from 'os'
 import path from 'path'
 import { toSet } from '../../src/helpers'
 
-const logger = createLogger('jx:ft')
+export const logger = createLogger('jx:ft')
 const TRASH_DIR = '__Trash__'
 
 export async function matchFiles(

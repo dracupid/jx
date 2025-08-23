@@ -97,7 +97,7 @@ await yargs(hideBin(process.argv))
           array: true,
         }),
     async (args) => {
-      const { run } = await import('./heic2.ts')
+      const { run } = await import('./heic2')
       await run(args)
     }
   )
@@ -164,6 +164,12 @@ await yargs(hideBin(process.argv))
           boolean: true,
           default: false,
         })
+        .option('detect', {
+          alias: 'd',
+          desc: 'detect mode',
+          boolean: true,
+          default: false,
+        })
         .positional('files', {
           describe: 'file or dir list',
           type: 'string',
@@ -199,7 +205,7 @@ await yargs(hideBin(process.argv))
         array: true,
       }),
     async (args) => {
-      const { run } = await import('./ext.ts')
+      const { run } = await import('./ext')
       await run(args)
     }
   )

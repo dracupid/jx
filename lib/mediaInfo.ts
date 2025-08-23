@@ -48,6 +48,7 @@ export async function getMediaInfo(file: string) {
           '',
         colorPrims: t.colour_primaries_Original || t.colour_primaries || '',
         StreamSize: toMB(t.StreamSize as string),
+        _bitRate: (t.BitRate || '') + '',
       }
     } else if (t['@type'] === 'Audio') {
       audio = {
@@ -58,6 +59,7 @@ export async function getMediaInfo(file: string) {
         bitRateMode: t.BitRate_Mode || '',
         frameRate: t.FrameRate || '',
         StreamSize: toKB((t.StreamSize || t.Source_StreamSize) as string),
+        _bitRate: (t.BitRate || t.BitRate_Maximum || '') + '',
       }
     }
   }

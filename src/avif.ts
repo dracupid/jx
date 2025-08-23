@@ -70,7 +70,7 @@ export async function run(args: {
       if (args.svt) {
         await $`${bin} ${tmpPath || oldPath} -q 75 -e svt -p speed=4 -p qp=30 -o ${newPath} --benchmark` //.quiet()
       } else {
-        await $`${bin} ${tmpPath || oldPath} -q 75 -p aom:threads=1 -o ${newPath} --benchmark` //.quiet()
+        await $`${bin} ${tmpPath || oldPath} -q 75 -p threads=1 -o ${newPath} --benchmark` //.quiet()
       }
 
       if (tmpPath) {
