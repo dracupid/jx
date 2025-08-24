@@ -5,7 +5,7 @@ import {
   transformFiles,
 } from '../lib/utils/file-tools'
 
-const exts = ['jpg', 'png', 'jpeg', 'bmp', 'tiff', 'jfif', 'webp']
+const exts = ['jpg', 'png', 'jpeg', 'bmp', 'tiff', 'jfif', 'webp', 'RAF']
 export async function run(args: {
   remove: boolean
   files: string[] | undefined
@@ -16,8 +16,8 @@ export async function run(args: {
     replaceExtname.bind(undefined, '_2.heic'),
     async (oldPath, newPath) => {
       console.log(oldPath, newPath)
-      await $`heif-enc ${oldPath} -q 50 -o ${newPath} -p x265:preset=veryfast --benchmark` //.quiet()
+      await $`heif-enc ${oldPath} -o ${newPath} --benchmark`.quiet()
     },
-    { concurrency: 1 }
+    { concurrency: 2 }
   )
 }

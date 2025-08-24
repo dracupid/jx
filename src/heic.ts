@@ -15,7 +15,7 @@ export async function run(args: {
     files,
     replaceExtname.bind(undefined, '.heic'),
     async (oldPath, newPath) => {
-      await $`sips -s format heic ${oldPath} --out ${newPath}`.quiet()
+      await $`sips -s format heic ${oldPath} -s formatOptions high --out ${newPath}`.quiet()
     },
     args
   )
