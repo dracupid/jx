@@ -108,6 +108,7 @@ export async function transformFiles(
     concurrency: number
     remove: boolean
     trashRoot: string
+    ignoreSize: boolean
   }> = {},
   postRun?: (from: string, to: string) => void | Promise<void>
 ) {
@@ -136,13 +137,12 @@ export async function transformFiles(
         const percent = (newSize / oldSize) * 100
 
         const isBadCase = newSize >= oldSize
-
         if (isBadCase) {
           logger.error(
             `>> [${path.basename(file)}] ${prettySize(oldSize)} -> ${prettySize(newSize)} (${percent.toFixed(1)}%)\t${'>'.repeat(Math.ceil(percent / 10))}`
           )
           if (args.remove) {
-            await moveToTrash(newPath)
+            await moveToTrash(args.ignoreSize ? file : newPath)
           }
         } else {
           logger[percent < 15 ? 'info' : percent > 85 ? 'warn' : 'log'](

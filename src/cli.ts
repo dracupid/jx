@@ -70,6 +70,22 @@ await yargs(hideBin(process.argv))
           boolean: true,
           default: false,
         })
+        .option('minor', {
+          alias: 'm',
+          desc: 'unimportant image',
+          boolean: true,
+          default: false,
+        })
+        .option('forceJpg', {
+          describe: 'forceJpg extname',
+          boolean: true,
+          default: false,
+        })
+        .option('ignoreSize', {
+          describe: 'ignoreSize when remove',
+          boolean: true,
+          default: false,
+        })
         .positional('files', {
           describe: 'file or dir list',
           type: 'string',
@@ -137,6 +153,10 @@ await yargs(hideBin(process.argv))
           desc: 'remove origin video',
           boolean: true,
           default: false,
+        })
+        .option('preset', {
+          desc: 'ffmpeg preeset',
+          string: true,
         })
         .option('hevc', {
           desc: 'encode to hevc',

@@ -29,6 +29,7 @@ export async function run(args: {
   copy: boolean
   compare: boolean
   detect: boolean
+  preset: string
 }) {
   const files = await matchFiles(
     args.files,
@@ -85,6 +86,12 @@ export async function run(args: {
   if (args.avif) {
     ffmpegArgs.push('-cpu-used', '6', '-row-mt', '1')
   }
+
+  if (args.preset) {
+    ffmpegArgs.push('-preset', args.preset)
+  }
+
+  console.log(ffmpegArgs)
 
   await transformFiles(
     files,
